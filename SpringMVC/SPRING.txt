@@ -1,0 +1,177 @@
+SPRING.txt
+
+Spring Framework
+
+Frame + work => 어떤 대상을 구성하는 구조 / 틀 / 뼈대 
+             => S/W 관점 : 기능을 클래스, 인터페이스 형태로 미리 만들어서 제공하는 것 (반조립) - 쉽게 말하면 밀키트
+             =>> 어느 정도의 완성된 상태를 제공함
+             
+  * 스프링 프레임워크 : 자바 - 웹 애플리케이션을 개발하기 위한 오픈소스 프레임워크 
+    
+		중량 프레임워크(EJB)	<->		 경량 프레임워크
+		
+		  서버중심 개발					클라이언트 중심 개발(모바일)
+		  확장성, 유지보수      		생산성, 안정성        
+
+		  
+		  
+  * 스프링 주요 용어
+  
+    - 제어의 역행(IoC : Inversion of Control) 이라는 기술을 사용해서 애플리케이션의 느슨한 결합을 제어
+    - 의존성 주입(DI : Dependency Injection) : 클래스, 객체 등을 개발자가 직접 코드로 생성 X,
+    										   프레임워크가 만들어놓은 객체를 가져다가 사용
+    - 관점지향 프로그래밍(AOP : Aspect Oriented Programming) : 다양한 자원관리 수행가능
+    				=> 핵심기능을 제외한 나머지 부수기능을 분리 구현해서 처리하는 형태(모듈성 증가)
+    - 영속성 관련 다양한 서비스(라이브러리)를 제공 
+    
+    * 스프링 주요 기능
+      Core : 다른 기능, 설정들을 분리하기 위한 IoC 기능을 제공
+      Context : 기본 기능, 애플리케이션의 각 기능을 하는 객체(=빈 - Bean)에 대해서 접근
+      DAO : JDBC 기능을 편리하게 사용
+      ORM : 영속성 관련 프레임워크의 연동기능(하이버네이트, 마이바티스)
+      AOP : 관점 지향 프로그래밍 제공
+      Web : 웹 애플리케이션 개발에 필요한 정보 제공
+      WebMVC : 스프링 MVC구현에 필요한 정보
+      
+    p.122
+    	
+    	* MVC (moder2)
+    	
+    	Controller => Model => DAO => DB
+    		| 
+    		View(jsp)
+    		
+    		
+    	* 스프링 MVC 	
+    	  
+    	스프링 MVC => Controller =>  Service  =>  DAO  =>  MyBatis  =>  DB
+    		| 
+    		View(jsp) 
+    		
+    	|-----------------------|--------------|----------------------------|
+    		Presentation Layer	 Business Layer		Data Access Layer
+    		
+    		
+    * Presentation Layer : UI 구성하는 요소 (모바일/웹)	
+    * Business Layer : 서비스 계층 (Service Layer) , 데이터 처리로직	
+    * Data Access Layer : 데이터 처리 계층 / Persistence Layer(영속 계층)
+      
+      
+      ** MyBatis : SQL Mapper 라이브러리(프레임워크)
+      	1) 간결한 코드 처리 : try - catch - finally 생략 / pstmt - setXXX(), rs - rsgetXXX() 생략
+      	2) SQL 구문 분리 : xml 파일, 에노테이션
+      	3) Spring과 자동으로 연동
+      	4) 동적 SQL구문 제공
+      
+        DAO(스프링)  <=  MyBatis-spring  =>  MyBatis  =>  DB
+      
+      ** MyBatis : 퍼시스턴스 프레임워크이다.
+      			   마이바티스는 JDBC로 처리하는 상당부분의 코드와 파라미터 설정및
+      			   결과 매핑을 대신해준다. 마이바티스는 데이터베이스 레코드에 원시타입과
+      			   Map 인터페이스 그리고 자바 POJO 를 설정해서 매핑하기 위해 XML과 애노테이션을 사용할 수 있다.  
+        
+      	(iBatis)
+      	
+      	방식 1)	XML(mapper)만 사용하여 SQL구문 처리, DAO에서 XML코드 호출
+      			장점 : XML코드로 작성하기 때문에 SQL구문 유지보수가 편함
+      			단점 : 코드의 분량 증가 -> 복잡성 증가
+      			
+      	방식 2)	애노테이션 & 인터페이스의 조합으로 SQL 실행
+      			장점 : 별도의 DAO 객체 없이 사용가능 (생산성 증가)
+      			단점 : 코드 변경시 마다 컴파일 발생 
+      			
+      	방식 3)	XML코드(복잡SQL) / 애노테이션 & 인터페이스(간단SQL)를 같이 사용
+      			장점 : 유연하게 SQL 작업
+      			단점 : 개발자의 능력치에 따른 편차 발생
+      	
+      	MyBatis 사용방법
+      	- DB 생성 & 계정 준비
+      	- 테이블 생성
+      	- 도메인 객체 및 클래스(DTO) 생성
+      	- DAO 인터페이스 생성 & 수행하는 동작 추상메서드로 선언
+      	- XML mapper 생성
+      	- 저장된 mapper의 위치(namespace) 설정
+      	- mapper DTD 설정
+      	- SQL 작성
+      	- MyBatis에서 해당 mapper를 인식하는 설정
+      	- DAO 인터페이스를 구현하는 객체 생성
+      	- DAO 객체를 스프링빈에 등록
+      	- 테스트
+      	
+      	
+      	
+      	* 도메인 객체(domain) : 프로젝트에서 가장 중요한 개념 / 단어 (명사) => 객체로 표현(DTO)
+      	  => 도메인 하나의 온전한 개념/시스템, 물리적으로 구분가능한 개념인지 판단
+      	
+      	* DB 데이터를 Mybatis 사용해서 처리 동작로직
+      	[Test] <=> [DAO/DAOImpl] <=> [mapper] <=> [Mysql]
+      	   	 (스프링)
+      	
+      	p122 스프링MVC 구조
+      	
+      								   2) HandlerMapping
+      					  			  //
+      	request -> 1) DispatcherServlet  =  3) HanderAdapter  =  4) Controller  =>  Service  =>  DAO  =>  MyBatis  =>  DB
+      					||			  \\
+      				  6) View		   5) ViewResolver
+      					||
+      				  JSP/HTML
+      	
+      	
+      	* 스프링 MVC 제공기능
+      	 - URI를 분석해서 해당 컨트롤러 찾기
+      	 - 컨트롤러에 필요한 메서드 호출 (doGet, doPost)
+      	 - 컨트롤러의 결과(데이터)를 뷰페이지로 전달
+      	 - 적절한 뷰페이지 찾기
+      	 - 파라메터 자동수집(개별/객체)
+      	 - 테스트 편의성 제공
+      	 => 개발로직 집중
+      	 
+      	 
+      	* 개발자 구현 기능
+      	 - 특정 URI에 동작하는 컨트롤러 생성
+      	 - 서비스 객체 
+      	 - DAO 객체 
+      	 - 각 동작별 메서드 구현
+      	 - 뷰페이지에서 전달받은 데이터 출력
+      	
+      	
+      	* log4j : 프로젝트 구현시 콘솔 로그를 출력객체
+      			  System.out.println() 코드를 대신해서 처리 (시스템 리소스 부담을 줄임)
+      	 
+      	 - 로그 레벨(1 ~ 6 심각한 로그)
+      	 
+      	 FATAL	 6		* 시스템 차원에서 심각한 문제 발생
+      	 ERROR	 5	  	* 실행중 문제 발생
+      	 WARN	 4		* 시스템 오류 원인
+      	 INFO	 3		* 실제 서비스 운영과 관련된 로그(로그인,로그아웃 ...)
+      	 DEBUG	 2		* 개발시 디버깅용도
+      	 TRACE	 1		* (DEBUG 레벨보다) 상세정보 출력
+      			  
+      	 ** 설정한 레벨보다 낮은 레벨의 로그는 출력X, 높은 레벨의 로그는 출력O
+      	 
+      	 
+      	 * 서비스(비지니스 로직) 계층
+      	 
+      	 model2		: View - Controller - Model(- DAO)
+      	 springMVC	: Controller - Service - DAO
+      	 
+      	 - 고객(사용자)이 원하는 동작을 구현하는 영역
+      	 - 컨트롤러의 DAO(영속계층)에 종속적인 상황을 막아줌(완충영역)
+      	 - 외부에서 내부데이터로 접근하는 것을 방지 (은행원 비유)
+      	 - 트랜잭션 처리, 예외 처리, 뷰페이지, DB 처리 모두 컨트롤러가 하는 것을 막는다
+      	 - 컨트롤러와 DAO를 연결하는 다리
+      	 
+      	 
+      	 * 팀프로젝트 워크스페이스 분리해서 사용하는 걸 권장
+      	 
+      	 * 회원정보 관리 프로젝트
+      	 
+      	 - 회원가입
+      	 - 로그인 / 로그아웃
+      	 - 메인페이지
+      	 - 회원정보 조회 (info)
+      	 - 회원정보 수정 
+      	 - 회원정보 삭제
+      	 - 회원정보 리스트
+	      			 		  
